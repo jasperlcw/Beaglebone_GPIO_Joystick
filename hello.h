@@ -71,13 +71,13 @@ void runGame(LedZero* ledZero, LedOne* ledOne, LedTwo* ledTwo, LedThree* ledThre
 /*
 Function to make program sleep from random value between 0.5 to 3 seconds
 */
-void gameSleep();
+void gameSleep(void);
 
 /*
 Checks whether or not the user is already pressing up or down on the joystick
 when they are not supposed to. Returns true if up or down is pressed on the joystick, false otherwise.
 */
-bool tooSoonCheck();
+bool tooSoonCheck(JsUp* jsUp, JsDown* jsDown);
 
 /*
 Returns the direction of the joystick pressed.
