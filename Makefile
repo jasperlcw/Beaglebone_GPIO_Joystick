@@ -5,7 +5,7 @@ CC_C = $(CROSS_COMPILE)gcc
 CFLAGS = -Wall -g -std=c99 -D _POSIX_C_SOURCE=200809L -Werror -Wshadow
 
 app:
-	$(CC_C) $(CFLAGS) helloMain.c helloSetup.c helloLoop.c hello.h -o $(OUTDIR)/$(OUTFILE)
+	$(CC_C) $(CFLAGS) helloMain.c helloSetup.c helloLoop.c helloUserInput.c hello.h -o $(OUTDIR)/$(OUTFILE)
 
 clean:
 	rm $(OUTDIR)/$(OUTFILE)
