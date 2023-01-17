@@ -11,6 +11,15 @@ JsDirection getUserInput(JsUp* jsUp, JsDown* jsDown, JsRight* jsRight, JsLeft* j
 {
     long long timeLimitInMs = 5000;
     long long initialTime = getTimeInMs();
+    const int MAX_LENGTH = 1024;
+    char buf[MAX_LENGTH];
+
+    while (getTimeInMs() - initialTime < timeLimitInMs) {
+        // TODO: read GPIO file for direction where 0 is the one pressed
+    }
+
+    // Time exceeded here
+    return NONE;
 }
 
 // Below functions taken from page 7 of the assignment 1 pdf.

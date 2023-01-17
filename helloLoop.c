@@ -42,6 +42,7 @@ void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThre
     srand(time(NULL));
     printf("\nWhen the LEDs light up, press the joystick in that direction!\n(Press left or right to exit)\n");
     bool isRunning = true;
+    long long bestTime = 9223372036854775807; // LONG_MAX
     while (isRunning)
     {
         printf("Get ready...\n");
@@ -70,6 +71,7 @@ void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThre
                 fprintf(ledThree->brightness, "1");
             }
 
+            long long startTime = getTimeInMs();
             JsDirection userInput = getUserInput(jsUp, jsDown, jsRight, jsLeft);
             if (userInput == NONE)
             {
@@ -83,7 +85,12 @@ void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThre
             }
             else if (userInput == dir)
             {
-                // Check reaction time
+                long long attemptTime = getTimeInMs() - startTime;
+                if (attemptTime < bestTime) {
+                    bestTime = attemptTime;
+                    printf("New best time!\n");
+                }
+                printf("Your reaction time was %lld; best so far in game is %lld.\n", attemptTime, bestTime);
                 correctFlashLight(ledZero, ledOne, ledTwo, ledThree);
                 sleepForMs(1000);
             }
