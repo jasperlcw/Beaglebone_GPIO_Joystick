@@ -35,6 +35,9 @@ typedef LedGeneric LedOne;
 typedef LedGeneric LedTwo;
 typedef LedGeneric LedThree;
 
+/*
+Structure for holding the files used for controlling the joystick.
+*/
 typedef struct JoystickGeneric {
     FILE* direction;
     FILE* value;
@@ -48,7 +51,7 @@ typedef JoystickGeneric JsLeft;
 /*
 Enum for direction of a joystick.
 */
-enum JsDirection {UP, DOWN, RIGHT, LEFT};
+typedef enum JsDirection {UP, DOWN, RIGHT, LEFT, NONE} JsDirection;
 
 /*
 Sets up LED and GPIO pins on the BeagleBoard. Returns true if all operations succeed and false otherwise.
@@ -72,8 +75,14 @@ void gameSleep();
 
 /*
 Checks whether or not the user is already pressing up or down on the joystick
-when they are not supposed to. Returns true up or down is pressed on the joystick, false otherwise.
+when they are not supposed to. Returns true if up or down is pressed on the joystick, false otherwise.
 */
 bool tooSoonCheck();
+
+/*
+Returns the direction of the joystick pressed.
+If there is no user input for 5000ms, then it returns JsDirection.NONE.
+*/
+JsDirection getUserInput(JsUp* jsUp, JsDown* jsDown, JsRight* jsRight, JsLeft* jsLeft);
 
 #endif
