@@ -10,14 +10,15 @@ int main()
     LedOne ledOne;
     LedTwo ledTwo;
     LedThree ledThree;
-    
+
     JsUp jsUp;
     JsDown jsDown;
     JsRight jsRight;
     JsLeft jsLeft;
 
     bool setupStatus = configureHardware(&ledZero, &ledOne, &ledTwo, &ledThree, &jsUp, &jsDown, &jsRight, &jsLeft);
-    if (setupStatus == false) {
+    if (setupStatus == false)
+    {
         closeHardwareFiles(&ledZero, &ledOne, &ledTwo, &ledThree, &jsUp, &jsDown, &jsRight, &jsLeft);
         exit(1);
     }

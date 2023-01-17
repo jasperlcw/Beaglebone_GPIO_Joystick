@@ -7,10 +7,10 @@
 /*
 Function taken from assignment 1 page 8 to run an external command.
 */
-static void runCommand(char* command);
+static void runCommand(char *command);
 
-bool configureHardware(LedZero* ledZero, LedOne* ledOne, LedTwo* ledTwo, LedThree* ledThree,
-    JsUp* jsUp, JsDown* jsDown, JsRight* jsRight, JsLeft* jsLeft)
+bool configureHardware(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
+                       JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft)
 {
     ledZero->trigger = fopen(LED_0_TRIGGER_PATH, "w");
     ledOne->trigger = fopen(LED_1_TRIGGER_PATH, "w");
@@ -32,121 +32,149 @@ bool configureHardware(LedZero* ledZero, LedOne* ledOne, LedTwo* ledTwo, LedThre
     jsRight->value = fopen(JS_RIGHT_VALUE_PATH, "w");
     jsLeft->value = fopen(JS_LEFT_VALUE_PATH, "w");
 
-    if (ledZero->trigger == NULL) {
+    if (ledZero->trigger == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", LED_0_TRIGGER_PATH);
         return false;
     }
-    if (ledOne->trigger == NULL) {
+    if (ledOne->trigger == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", LED_1_TRIGGER_PATH);
         return false;
     }
-    if (ledTwo->trigger == NULL) {
+    if (ledTwo->trigger == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", LED_2_TRIGGER_PATH);
         return false;
     }
-    if (ledThree->trigger == NULL) {
+    if (ledThree->trigger == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", LED_3_TRIGGER_PATH);
         return false;
     }
 
-    if (fprintf(ledZero->trigger, "none") <= 0) {
+    if (fprintf(ledZero->trigger, "none") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", LED_0_TRIGGER_PATH);
         return false;
     }
-    if (fprintf(ledOne->trigger, "none") <= 0) {
+    if (fprintf(ledOne->trigger, "none") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", LED_1_TRIGGER_PATH);
         return false;
     }
-    if (fprintf(ledTwo->trigger, "none") <= 0) {
+    if (fprintf(ledTwo->trigger, "none") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", LED_2_TRIGGER_PATH);
         return false;
     }
-    if (fprintf(ledThree->trigger, "none") <= 0) {
+    if (fprintf(ledThree->trigger, "none") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", LED_3_TRIGGER_PATH);
         return false;
     }
 
-    if (ledZero->brightness == NULL) {
+    if (ledZero->brightness == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", LED_0_BRIGHTNESS_PATH);
         return false;
     }
-    if (ledOne->brightness == NULL) {
+    if (ledOne->brightness == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", LED_1_BRIGHTNESS_PATH);
         return false;
     }
-    if (ledTwo->brightness == NULL) {
+    if (ledTwo->brightness == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", LED_2_BRIGHTNESS_PATH);
         return false;
     }
-    if (ledThree->brightness == NULL) {
+    if (ledThree->brightness == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", LED_3_BRIGHTNESS_PATH);
         return false;
     }
 
-    if (fprintf(ledZero->brightness, "0") <= 0) {
+    if (fprintf(ledZero->brightness, "0") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", LED_0_BRIGHTNESS_PATH);
         return false;
     }
-    if (fprintf(ledOne->brightness, "0") <= 0) {
+    if (fprintf(ledOne->brightness, "0") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", LED_1_BRIGHTNESS_PATH);
         return false;
     }
-    if (fprintf(ledTwo->brightness, "0") <= 0) {
+    if (fprintf(ledTwo->brightness, "0") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", LED_2_BRIGHTNESS_PATH);
         return false;
     }
-    if (fprintf(ledThree->brightness, "0") <= 0) {
+    if (fprintf(ledThree->brightness, "0") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", LED_3_BRIGHTNESS_PATH);
         return false;
     }
 
-    if (jsUp->direction == NULL) {
+    if (jsUp->direction == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", JS_UP_DIRECTION_PATH);
         return false;
     }
-    if (jsDown->direction == NULL) {
+    if (jsDown->direction == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", JS_DOWN_DIRECTION_PATH);
         return false;
     }
-    if (jsRight->direction == NULL) {
+    if (jsRight->direction == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", JS_RIGHT_DIRECTION_PATH);
         return false;
     }
-    if (jsLeft->direction == NULL) {
+    if (jsLeft->direction == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", JS_LEFT_DIRECTION_PATH);
         return false;
     }
 
-    if (fprintf(jsUp->direction, "in") <= 0) {
+    if (fprintf(jsUp->direction, "in") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", JS_UP_DIRECTION_PATH);
         return false;
     }
-    if (fprintf(jsDown->direction, "in") <= 0) {
+    if (fprintf(jsDown->direction, "in") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", JS_DOWN_DIRECTION_PATH);
         return false;
     }
-    if (fprintf(jsRight->direction, "in") <= 0) {
+    if (fprintf(jsRight->direction, "in") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", JS_RIGHT_DIRECTION_PATH);
         return false;
     }
-    if (fprintf(jsLeft->direction, "in") <= 0) {
+    if (fprintf(jsLeft->direction, "in") <= 0)
+    {
         fprintf(stderr, "Error writing to %s.\n", JS_LEFT_DIRECTION_PATH);
         return false;
     }
 
-    if (jsUp->value == NULL) {
+    if (jsUp->value == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", JS_UP_VALUE_PATH);
         return false;
     }
-    if (jsDown->value == NULL) {
+    if (jsDown->value == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", JS_DOWN_VALUE_PATH);
         return false;
     }
-    if (jsRight->value == NULL) {
+    if (jsRight->value == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", JS_RIGHT_VALUE_PATH);
         return false;
     }
-    if (jsLeft->value == NULL) {
+    if (jsLeft->value == NULL)
+    {
         fprintf(stderr, "Error opening %s.\n", JS_LEFT_VALUE_PATH);
         return false;
     }
@@ -159,8 +187,8 @@ bool configureHardware(LedZero* ledZero, LedOne* ledOne, LedTwo* ledTwo, LedThre
     return true;
 }
 
-void closeHardwareFiles(LedZero* ledZero, LedOne* ledOne, LedTwo* ledTwo, LedThree* ledThree,
-    JsUp* jsUp, JsDown* jsDown, JsRight* jsRight, JsLeft* jsLeft) 
+void closeHardwareFiles(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
+                        JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft)
 {
     fclose(ledZero->trigger);
     fclose(ledOne->trigger);

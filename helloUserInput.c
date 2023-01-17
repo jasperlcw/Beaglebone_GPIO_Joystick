@@ -7,15 +7,53 @@
 
 static long long getTimeInMs(void);
 
-JsDirection getUserInput(JsUp* jsUp, JsDown* jsDown, JsRight* jsRight, JsLeft* jsLeft)
+bool tooSoonCheck(JsUp *jsUp, JsDown *jsDown)
+{
+    // Value for pressed is 0, and 1 otherwise
+    const int MAX_LENGTH = 1024;
+    char buf[MAX_LENGTH];
+    fgets(buf, MAX_LENGTH, jsUp->value);
+    if (buf[0] == '0')
+    {
+        return true;
+    }
+    fgets(buf, MAX_LENGTH, jsDown->value);
+    if (buf[0] == '0')
+    {
+        return true;
+    }
+    return false;
+}
+
+JsDirection getUserInput(JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft)
 {
     long long timeLimitInMs = 5000;
     long long initialTime = getTimeInMs();
     const int MAX_LENGTH = 1024;
     char buf[MAX_LENGTH];
 
-    while (getTimeInMs() - initialTime < timeLimitInMs) {
-        // TODO: read GPIO file for direction where 0 is the one pressed
+    while (getTimeInMs() - initialTime < timeLimitInMs)
+    {
+        fgets(buf, MAX_LENGTH, jsUp->value);
+        if (buf[0] == '0')
+        {
+            return UP;
+        }
+        fgets(buf, MAX_LENGTH, jsDown->value);
+        if (buf[0] == '0')
+        {
+            return DOWN;
+        }
+        fgets(buf, MAX_LENGTH, jsRight->value);
+        if (buf[0] == '0')
+        {
+            return RIGHT;
+        }
+        fgets(buf, MAX_LENGTH, jsLeft->value);
+        if (buf[0] == '0')
+        {
+            return LEFT;
+        }
     }
 
     // Time exceeded here

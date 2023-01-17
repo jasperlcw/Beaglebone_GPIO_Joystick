@@ -18,24 +18,6 @@ void gameSleep(void)
     sleepForMs(milliseconds);
 }
 
-bool tooSoonCheck(JsUp *jsUp, JsDown *jsDown)
-{
-    // Value for pressed is 0, and 1 otherwise
-    const int MAX_LENGTH = 1024;
-    char buf[MAX_LENGTH];
-    fgets(buf, MAX_LENGTH, jsUp->value);
-    if (buf[0] == '0')
-    {
-        return true;
-    }
-    fgets(buf, MAX_LENGTH, jsDown->value);
-    if (buf[0] == '0')
-    {
-        return true;
-    }
-    return false;
-}
-
 void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
              JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft)
 {
@@ -86,7 +68,8 @@ void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThre
             else if (userInput == dir)
             {
                 long long attemptTime = getTimeInMs() - startTime;
-                if (attemptTime < bestTime) {
+                if (attemptTime < bestTime)
+                {
                     bestTime = attemptTime;
                     printf("New best time!\n");
                 }

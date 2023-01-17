@@ -25,9 +25,10 @@
 /*
 Structure for holding the files used for controlling the LEDs.
 */
-typedef struct LedGeneric {
-    FILE* trigger;
-    FILE* brightness;
+typedef struct LedGeneric
+{
+    FILE *trigger;
+    FILE *brightness;
 } LedGeneric;
 
 typedef LedGeneric LedZero;
@@ -38,9 +39,10 @@ typedef LedGeneric LedThree;
 /*
 Structure for holding the files used for controlling the joystick.
 */
-typedef struct JoystickGeneric {
-    FILE* direction;
-    FILE* value;
+typedef struct JoystickGeneric
+{
+    FILE *direction;
+    FILE *value;
 } JoystickGeneric;
 
 typedef JoystickGeneric JsUp;
@@ -51,22 +53,29 @@ typedef JoystickGeneric JsLeft;
 /*
 Enum for direction of a joystick.
 */
-typedef enum JsDirection {UP, DOWN, RIGHT, LEFT, NONE} JsDirection;
+typedef enum JsDirection
+{
+    UP,
+    DOWN,
+    RIGHT,
+    LEFT,
+    NONE
+} JsDirection;
 
 /*
 Sets up LED and GPIO pins on the BeagleBoard. Returns true if all operations succeed and false otherwise.
 */
-bool configureHardware(LedZero* ledZero, LedOne* ledOne, LedTwo* ledTwo, LedThree* ledThree,
-    JsUp* jsUp, JsDown* jsDown, JsRight* jsRight, JsLeft* jsLeft);
+bool configureHardware(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
+                       JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft);
 
-void closeHardwareFiles(LedZero* ledZero, LedOne* ledOne, LedTwo* ledTwo, LedThree* ledThree,
-    JsUp* jsUp, JsDown* jsDown, JsRight* jsRight, JsLeft* jsLeft);
+void closeHardwareFiles(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
+                        JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft);
 
 /*
 Function for continuous execution of the contents of the game.
 */
-void runGame(LedZero* ledZero, LedOne* ledOne, LedTwo* ledTwo, LedThree* ledThree,
-    JsUp* jsUp, JsDown* jsDown, JsRight* jsRight, JsLeft* jsLeft);
+void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
+             JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft);
 
 /*
 Function to make program sleep from random value between 0.5 to 3 seconds
@@ -77,12 +86,12 @@ void gameSleep(void);
 Checks whether or not the user is already pressing up or down on the joystick
 when they are not supposed to. Returns true if up or down is pressed on the joystick, false otherwise.
 */
-bool tooSoonCheck(JsUp* jsUp, JsDown* jsDown);
+bool tooSoonCheck(JsUp *jsUp, JsDown *jsDown);
 
 /*
 Returns the direction of the joystick pressed.
 If there is no user input for 5000ms, then it returns JsDirection.NONE.
 */
-JsDirection getUserInput(JsUp* jsUp, JsDown* jsDown, JsRight* jsRight, JsLeft* jsLeft);
+JsDirection getUserInput(JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft);
 
 #endif
