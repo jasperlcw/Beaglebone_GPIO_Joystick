@@ -7,9 +7,6 @@
 
 static long long getTimeInMs(void);
 static void sleepForMs(long long delayInMs);
-static void correctFlashLight(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree);
-static void incorrectFlashLight(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree);
-static void ledOff(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree);
 
 void gameSleep(void)
 {
@@ -18,8 +15,7 @@ void gameSleep(void)
     sleepForMs(milliseconds);
 }
 
-void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
-             JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft)
+void runGame(void)
 {
     srand(time(NULL));
     printf("\nWhen the LEDs light up, press the joystick in that direction!\n(Press left or right to exit)\n");
@@ -28,33 +24,46 @@ void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThre
     while (isRunning)
     {
         printf("Get ready...\n");
-        fprintf(ledOne->brightness, "1");
-        fprintf(ledTwo->brightness, "1");
+        getReadyLights();
         gameSleep();
-        bool tooSoon = tooSoonCheck(jsUp, jsDown);
-        if (tooSoon)
+        // bool tooSoon = tooSoonCheck();
+        // if (tooSoon)
+        // {
+        //     printf("Too soon!\n");
+        //     ledsOff();
+        //     sleepForMs(1000);
+        // }
+        JsDirection tooSoonVal = tooSoonCheck();
+        if (tooSoonVal == UP || tooSoonVal == DOWN)
         {
             printf("Too soon!\n");
+            ledsOff();
+            sleepForMs(1000);
+        }
+        else if (tooSoonVal == RIGHT || tooSoonVal == LEFT)
+        {
+            printf("User selected to quit.\n");
+            isRunning = false;
         }
         else
         {
             JsDirection dir;
-            ledOff(ledZero, ledOne, ledTwo, ledThree);
+            ledsOff();
             if (rand() % 2 == 0)
             {
                 dir = UP;
                 printf("Press UP now!\n");
-                fprintf(ledZero->brightness, "1");
+                jsUpLights();
             }
             else
             {
                 dir = DOWN;
                 printf("Press DOWN now!\n");
-                fprintf(ledThree->brightness, "1");
+                jsDownLights();
             }
 
             long long startTime = getTimeInMs();
-            JsDirection userInput = getUserInput(jsUp, jsDown, jsRight, jsLeft);
+            JsDirection userInput = getUserInput();
             if (userInput == NONE)
             {
                 printf("No input within 5000ms; quitting!\n");
@@ -62,7 +71,7 @@ void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThre
             }
             else if (userInput == RIGHT || userInput == LEFT)
             {
-                printf("User selected to quit.");
+                printf("User selected to quit.\n");
                 isRunning = false;
             }
             else if (userInput == dir)
@@ -73,62 +82,20 @@ void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThre
                     bestTime = attemptTime;
                     printf("New best time!\n");
                 }
-                printf("Your reaction time was %lld; best so far in game is %lld.\n", attemptTime, bestTime);
-                correctFlashLight(ledZero, ledOne, ledTwo, ledThree);
+                printf("Your reaction time was %lldms; best so far in game is %lldms.\n", attemptTime, bestTime);
+                correctFlashLight();
                 sleepForMs(1000);
             }
             else
             {
                 printf("Incorrect.\n");
-                incorrectFlashLight(ledZero, ledOne, ledTwo, ledThree);
+                incorrectFlashLight();
                 sleepForMs(1000);
             }
 
-            ledOff(ledZero, ledOne, ledTwo, ledThree);
         }
+        ledsOff();
     }
-}
-
-static void correctFlashLight(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree)
-{
-    for (int i = 0; i < 2; ++i)
-    {
-        fprintf(ledZero->brightness, "1");
-        fprintf(ledOne->brightness, "1");
-        fprintf(ledTwo->brightness, "1");
-        fprintf(ledThree->brightness, "1");
-        sleepForMs(125);
-        fprintf(ledZero->brightness, "0");
-        fprintf(ledOne->brightness, "0");
-        fprintf(ledTwo->brightness, "0");
-        fprintf(ledThree->brightness, "0");
-        sleepForMs(125);
-    }
-}
-
-static void incorrectFlashLight(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree)
-{
-    for (int i = 0; i < 10; ++i)
-    {
-        fprintf(ledZero->brightness, "1");
-        fprintf(ledOne->brightness, "1");
-        fprintf(ledTwo->brightness, "1");
-        fprintf(ledThree->brightness, "1");
-        sleepForMs(50);
-        fprintf(ledZero->brightness, "0");
-        fprintf(ledOne->brightness, "0");
-        fprintf(ledTwo->brightness, "0");
-        fprintf(ledThree->brightness, "0");
-        sleepForMs(50);
-    }
-}
-
-static void ledOff(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree)
-{
-    fprintf(ledZero->brightness, "0");
-    fprintf(ledOne->brightness, "0");
-    fprintf(ledTwo->brightness, "0");
-    fprintf(ledThree->brightness, "0");
 }
 
 // Below functions taken from page 7 of the assignment 1 pdf.

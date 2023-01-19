@@ -2,55 +2,70 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <time.h>
+#include <string.h>
 
 static long long getTimeInMs(void);
+static char firstCharFromFile(char *filename);
 
-bool tooSoonCheck(JsUp *jsUp, JsDown *jsDown)
+JsDirection tooSoonCheck(void)
 {
     // Value for pressed is 0, and 1 otherwise
-    const int MAX_LENGTH = 1024;
-    char buf[MAX_LENGTH];
-    fgets(buf, MAX_LENGTH, jsUp->value);
-    if (buf[0] == '0')
+    char readValue = firstCharFromFile(JS_UP_VALUE_PATH);
+    if (readValue == '0')
     {
-        return true;
+        return UP;
     }
-    fgets(buf, MAX_LENGTH, jsDown->value);
-    if (buf[0] == '0')
+
+    readValue = firstCharFromFile(JS_DOWN_VALUE_PATH);
+    if (readValue == '0')
     {
-        return true;
+        return DOWN;
     }
-    return false;
+
+    readValue = firstCharFromFile(JS_RIGHT_VALUE_PATH);
+    if (readValue == '0')
+    {
+        return RIGHT;
+    }
+
+    readValue = firstCharFromFile(JS_LEFT_VALUE_PATH);
+    if (readValue == '0')
+    {
+        return LEFT;
+    }
+
+    return NONE;
 }
 
-JsDirection getUserInput(JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft)
+JsDirection getUserInput(void)
 {
     long long timeLimitInMs = 5000;
     long long initialTime = getTimeInMs();
-    const int MAX_LENGTH = 1024;
-    char buf[MAX_LENGTH];
 
     while (getTimeInMs() - initialTime < timeLimitInMs)
     {
-        fgets(buf, MAX_LENGTH, jsUp->value);
-        if (buf[0] == '0')
+
+        char readValue = firstCharFromFile(JS_UP_VALUE_PATH);
+        if (readValue == '0')
         {
             return UP;
         }
-        fgets(buf, MAX_LENGTH, jsDown->value);
-        if (buf[0] == '0')
+
+        readValue = firstCharFromFile(JS_DOWN_VALUE_PATH);
+        if (readValue == '0')
         {
             return DOWN;
         }
-        fgets(buf, MAX_LENGTH, jsRight->value);
-        if (buf[0] == '0')
+
+        readValue = firstCharFromFile(JS_RIGHT_VALUE_PATH);
+        if (readValue == '0')
         {
             return RIGHT;
         }
-        fgets(buf, MAX_LENGTH, jsLeft->value);
-        if (buf[0] == '0')
+
+        readValue = firstCharFromFile(JS_LEFT_VALUE_PATH);
+        if (readValue == '0')
         {
             return LEFT;
         }
@@ -60,7 +75,7 @@ JsDirection getUserInput(JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *j
     return NONE;
 }
 
-// Below functions taken from page 7 of the assignment 1 pdf.
+// Below functions taken from the assignment 1 pdf.
 static long long getTimeInMs(void)
 {
     struct timespec spec;
@@ -69,4 +84,22 @@ static long long getTimeInMs(void)
     long long nanoSeconds = spec.tv_nsec;
     long long milliSeconds = seconds * 1000 + nanoSeconds / 1000000;
     return milliSeconds;
+}
+
+static char firstCharFromFile(char *fileName)
+{
+    FILE *pFile = fopen(fileName, "r");
+    if (pFile == NULL)
+    {
+        printf("ERROR: Unable to open file (%s) for read\n", fileName);
+        exit(-1);
+    }
+    // Read string (line)
+    const int MAX_LENGTH = 1024;
+    char buff[MAX_LENGTH];
+    fgets(buff, MAX_LENGTH, pFile);
+    // Close
+    fclose(pFile);
+    // printf("Read: '%s'\n", buff);
+    return buff[0];
 }

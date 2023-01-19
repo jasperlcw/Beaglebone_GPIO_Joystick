@@ -6,26 +6,11 @@
 
 int main()
 {
-    LedZero ledZero;
-    LedOne ledOne;
-    LedTwo ledTwo;
-    LedThree ledThree;
-
-    JsUp jsUp;
-    JsDown jsDown;
-    JsRight jsRight;
-    JsLeft jsLeft;
-
-    bool setupStatus = configureHardware(&ledZero, &ledOne, &ledTwo, &ledThree, &jsUp, &jsDown, &jsRight, &jsLeft);
-    if (setupStatus == false)
-    {
-        closeHardwareFiles(&ledZero, &ledOne, &ledTwo, &ledThree, &jsUp, &jsDown, &jsRight, &jsLeft);
-        exit(1);
-    }
+    bool setupStatus = configureHardware();
+    if (setupStatus == false) { exit(1); }
 
     printf("Hello embedded world, from Jasper Wong!\n");
-    // runGame(&ledZero, &ledOne, &ledTwo, &ledThree, &jsUp, &jsDown, &jsRight, &jsLeft);
+    runGame();
 
-    closeHardwareFiles(&ledZero, &ledOne, &ledTwo, &ledThree, &jsUp, &jsDown, &jsRight, &jsLeft);
     return 0;
 }

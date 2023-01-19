@@ -23,34 +23,6 @@
 #define JS_LEFT_VALUE_PATH "/sys/class/gpio/gpio65/value"
 
 /*
-Structure for holding the files used for controlling the LEDs.
-*/
-typedef struct LedGeneric
-{
-    FILE *trigger;
-    FILE *brightness;
-} LedGeneric;
-
-typedef LedGeneric LedZero;
-typedef LedGeneric LedOne;
-typedef LedGeneric LedTwo;
-typedef LedGeneric LedThree;
-
-/*
-Structure for holding the files used for controlling the joystick.
-*/
-typedef struct JoystickGeneric
-{
-    FILE *direction;
-    FILE *value;
-} JoystickGeneric;
-
-typedef JoystickGeneric JsUp;
-typedef JoystickGeneric JsDown;
-typedef JoystickGeneric JsRight;
-typedef JoystickGeneric JsLeft;
-
-/*
 Enum for direction of a joystick.
 */
 typedef enum JsDirection
@@ -63,19 +35,15 @@ typedef enum JsDirection
 } JsDirection;
 
 /*
-Sets up LED and GPIO pins on the BeagleBoard. Returns true if all operations succeed and false otherwise.
+Sets up LED and GPIO pins on the BeagleBoard for the game to run.
+Returns true if all operations succeed and false otherwise.
 */
-bool configureHardware(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
-                       JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft);
-
-void closeHardwareFiles(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
-                        JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft);
+bool configureHardware();;
 
 /*
 Function for continuous execution of the contents of the game.
 */
-void runGame(LedZero *ledZero, LedOne *ledOne, LedTwo *ledTwo, LedThree *ledThree,
-             JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft);
+void runGame(void);
 
 /*
 Function to make program sleep from random value between 0.5 to 3 seconds
@@ -83,15 +51,50 @@ Function to make program sleep from random value between 0.5 to 3 seconds
 void gameSleep(void);
 
 /*
-Checks whether or not the user is already pressing up or down on the joystick
-when they are not supposed to. Returns true if up or down is pressed on the joystick, false otherwise.
+A variant of getUserInput that gets the status of the joystick inputs once.
+Returns the direction of the joystick pressed.
 */
-bool tooSoonCheck(JsUp *jsUp, JsDown *jsDown);
+JsDirection tooSoonCheck(void);
 
 /*
 Returns the direction of the joystick pressed.
 If there is no user input for 5000ms, then it returns JsDirection.NONE.
 */
-JsDirection getUserInput(JsUp *jsUp, JsDown *jsDown, JsRight *jsRight, JsLeft *jsLeft);
+JsDirection getUserInput(void);
+
+/*
+Displays the LED animation sequence when the player presses the correct direction.
+*/
+void correctFlashLight(void);
+
+/*
+Displays the LED animation sequence when the player presses the wrong direction.
+*/
+void incorrectFlashLight(void);
+
+/*
+Turns off all four LEDs on the BeagleBoard.
+*/
+void ledsOff(void);
+
+/*
+Turns on all four LEDs on the BeagleBoard.
+*/
+void ledsOn(void);
+
+/*
+Turns on the lights in the pattern as defined for when the player is supposed to get ready.
+*/
+void getReadyLights(void);
+
+/*
+Turns on the lights for moving the joystick up.
+*/
+void jsUpLights(void);
+
+/*
+Turns on the lights for moving the joystick down.
+*/
+void jsDownLights(void);
 
 #endif
